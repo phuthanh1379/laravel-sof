@@ -26,7 +26,11 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+        $posts = Post::all();
+        if ($posts->count() > 1) {
+            $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+        }
+
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -81,7 +85,14 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+
+        // If current user is not matched, throw an error
+        if (auth()->user()->id !== $post->user_id) {
+            return redirect('posts')->with('error', 'Unauthorized Page');
+        }
+        // ... otherwise, return the edit view
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
@@ -93,7 +104,18 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this -> validate($request, [
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        // Update post
+        $post = Post::find($id);
+        $post->name = $request->input('title');
+        $post->body = $request->input('body');
+        $post->save();
+
+        return redirect('/posts')->with('success', 'Post Updated');
     }
 
     /**
@@ -104,6 +126,14 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+
+        // If current user is not matched, throw an error
+        if (auth()->user()->id !== $post->user_id) {
+            return redirect('/posts')->with('error', 'Unauthorized Page');
+        }
+        // ... otherwise, delete post
+        $post->delete();
+        return redirect('/posts')->with('success', 'Post Deleted');
     }
 }
