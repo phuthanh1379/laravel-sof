@@ -132,4 +132,34 @@ class PostsController extends Controller
         $post->delete();
         return redirect('/posts')->with('success', 'Post Deleted');
     }
+
+    /**
+     * Upvote a post
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function upvote($id)
+    {
+        $post = Post::find($id);
+        $post->upvote += 1;
+        $post->save();
+
+        return redirect('/posts')->with('success', 'Post Updated');
+    }
+
+    /**
+     * Downvote a post
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function downvote($id)
+    {
+        $post = Post::find($id);
+        $post->downvote += 1;
+        $post->save();
+
+        return redirect('/posts')->with('success', 'Post Updated');
+    }
 }

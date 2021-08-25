@@ -23,6 +23,9 @@ Route::get('/about', function () {
 });
 
 // Posts
+Route::post('posts/upvote/{id}', ['uses' => 'App\Http\Controllers\PostsController@upvote']);
+Route::post('posts/downvote/{id}', ['uses' => 'App\Http\Controllers\PostsController@downvote']);
+
 Route::resource('posts', PostsController::class);
 
 Auth::routes();

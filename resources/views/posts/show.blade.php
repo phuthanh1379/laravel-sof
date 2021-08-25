@@ -20,6 +20,14 @@
                     {{Form::submit('Delete', ['class' => 'btn btn-danger'])}}
                 {!!Form::close()!!}
             </div>
+        @else
+            {!!Form::open(['action' => ['App\Http\Controllers\PostsController@upvote', $post->id], 'method' => 'POST'])!!}
+                {{Form::submit('Upvote', ['class' => 'btn btn-primary'])}}
+            {!!Form::close()!!}
+
+            {!!Form::open(['action' => ['App\Http\Controllers\PostsController@downvote', $post->id], 'method' => 'POST', 'class' => 'pull-right'])!!}
+                {{Form::submit('Downvote', ['class' => 'btn btn-danger'])}}
+            {!!Form::close()!!}
         @endif
     @endif
 @endsection
