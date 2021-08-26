@@ -25,9 +25,13 @@ Route::get('/about', function () {
 // Posts
 Route::post('posts/upvote/{id}', ['uses' => 'App\Http\Controllers\PostsController@upvote']);
 Route::post('posts/downvote/{id}', ['uses' => 'App\Http\Controllers\PostsController@downvote']);
+Route::get('posts/comment/{id}', ['uses' => 'App\Http\Controllers\PostsController@comment']);
+Route::post('posts/comment/{id}', ['uses' => 'App\Http\Controllers\PostsController@createComment']);
 
 Route::resource('posts', PostsController::class);
 
+// Auth
 Auth::routes();
 
+// Dashboard
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
